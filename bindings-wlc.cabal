@@ -17,8 +17,11 @@ library
   hs-source-dirs:      src
   exposed-modules:
                        Bindings.WLC
-                       Bindings.WLC.WLC
+                       Bindings.WLC.Defines
                        Bindings.WLC.Geometry
+                       Bindings.WLC.WLC
+                       Bindings.WLC.WLCRender
+                       Bindings.WLC.WLCWayland
   build-depends:       base >= 4.7 && < 5,
                        bindings-DSL >= 1.0.23 && < 1.1
   default-language:    Haskell2010
