@@ -5,7 +5,7 @@
 Module      : Bindings.WLC.Geometry
 Description : WLC Geometry
 Copyright   : (c) Ashley Towns 2016
-License     : GPL-3
+License     : BSD3
 Maintainer  : mail@ashleytowns.id.au
 Stability   : experimental
 Portability : POSIX
