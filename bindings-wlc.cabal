@@ -1,5 +1,5 @@
 name:                bindings-wlc
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Bindings against the wlc library
 description:         Please see README.md
 homepage:            http://github.com/aktowns/bindings-wlc#readme
@@ -19,14 +19,18 @@ library
                        Bindings.WLC
                        Bindings.WLC.Defines
                        Bindings.WLC.Geometry
-                       Bindings.WLC.WLC
-                       Bindings.WLC.WLCRender
-                       Bindings.WLC.WLCWayland
+                       Bindings.WLC.Core
+                       Bindings.WLC.Render
+                       Bindings.WLC.Wayland
+                       System.WLC
+                       System.WLC.Geometry
+                       System.WLC.Core
   build-depends:       base >= 4.7 && < 5,
-                       bindings-DSL >= 1.0.23 && < 1.1
+                       bindings-DSL >= 1.0.23 && < 1.1,
+                       convertible >= 1.1.1.0 && < 1.1.2.0
   default-language:    Haskell2010
   extra-libraries:     wlc
-  extensions:
+  default-extensions:
     ForeignFunctionInterface
 
 test-suite bindings-wlc-test

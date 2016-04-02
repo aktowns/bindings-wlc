@@ -12,7 +12,7 @@ Portability : POSIX
 
 Provides bindings to the core WLC API.
 -}
-module Bindings.WLC.WLC where
+module Bindings.WLC.Core where
 #strict_import
 
 import Bindings.WLC.Defines
@@ -118,8 +118,8 @@ import Bindings.WLC.Geometry
 
 -- |State of keyboard modifiers in various functions.
 #starttype struct wlc_modifiers
-#field leds, CUInt
-#field mods, CUInt
+#field leds, <wlc_led_bit>
+#field mods, <wlc_modifier_bit>
 #stoptype
 
 -- * Callback API
@@ -145,7 +145,7 @@ import Bindings.WLC.Geometry
 -- *** Input
 #callback_t keyboard_key_cb , <wlc_handle> -> CUInt -> Ptr <wlc_modifiers> -> CUInt -> <wlc_key_state> -> IO Bool
 #callback_t pointer_button_cb , <wlc_handle> -> CUInt -> Ptr <wlc_modifiers> -> CUInt -> <wlc_button_state> -> Ptr <wlc_point> -> IO Bool
-#callback_t pointer_scroll_cb , <wlc_handle> -> CUInt -> Ptr <wlc_modifiers> -> Int8 -> CDouble -> IO Bool
+#callback_t pointer_scroll_cb , <wlc_handle> -> CUInt -> Ptr <wlc_modifiers> -> <wlc_scroll_axis_bit> -> Double -> IO Bool
 #callback_t pointer_motion_cb , <wlc_handle> -> CUInt -> Ptr <wlc_point> -> IO Bool
 #callback_t touch_cb , <wlc_handle> -> CUInt -> Ptr <wlc_modifiers> -> <wlc_touch_type> -> CInt -> Ptr <wlc_point> -> IO Bool
 -- *** Other

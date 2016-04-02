@@ -17,12 +17,12 @@ wlc_output_schedule_render() is exception and may be used to force wlc to render
 For more advanced drawing you should directly use GLES2.
 This is not documented as it's currently relying on the implementation details of wlc.
 -}
-module Bindings.WLC.WLCRender where
+module Bindings.WLC.Render where
 #strict_import
 
 import Bindings.WLC.Defines
 import Bindings.WLC.Geometry
-import Bindings.WLC.WLCWayland
+import Bindings.WLC.Wayland
 
 -- |Allowed pixel formats.
 #integral_t enum wlc_pixel_format

@@ -10,7 +10,7 @@ Maintainer  : mail@ashleytowns.id.au
 Stability   : experimental
 Portability : POSIX
 -}
-module Bindings.WLC.WLCWayland where
+module Bindings.WLC.Wayland where
 #strict_import
 
 import Bindings.WLC.Defines
