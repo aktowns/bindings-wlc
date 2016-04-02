@@ -2,7 +2,7 @@
 #include <wlc/wlc.h>
 
 {-|
-Module      : Bindings.WLC.WLC
+Module      : Bindings.WLC.Core
 Description : Core WLC
 Copyright   : (c) Ashley Towns 2016
 License     : BSD3
