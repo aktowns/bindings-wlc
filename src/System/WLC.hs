@@ -9,8 +9,8 @@ Portability : POSIX
 
 Provides abstractions over the low level WLC API's
 -}
-module System.WLC where
+module System.WLC(module WLC) where
 
-import System.WLC.Core
-import System.WLC.Geometry
-import System.WLC.Types
+import System.WLC.Core      as WLC
+import System.WLC.Geometry  as WLC
+import System.WLC.Types     as WLC

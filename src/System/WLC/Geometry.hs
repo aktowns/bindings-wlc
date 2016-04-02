@@ -18,7 +18,7 @@ import Data.Convertible.Base
 import Data.Convertible.Instances.C
 
 import System.WLC.Utilities
-import Bindings.WLC.Geometry
+import Bindings.WLC
 
 -- |Fixed 2D point
 data Point = Point { x :: Int, y :: Int }

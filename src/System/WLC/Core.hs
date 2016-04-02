@@ -11,7 +11,7 @@ Provides abstractions over the low level bindings to the core WLC API.
 -}
 module System.WLC.Core where
 
-import Bindings.WLC.Core
+import Bindings.WLC
 import System.WLC.Types
 import System.WLC.Geometry
 import System.WLC.Utilities

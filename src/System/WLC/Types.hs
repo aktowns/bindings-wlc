@@ -13,8 +13,7 @@ convert them back and forth from the underlying C representations.
 -}
 module System.WLC.Types where
 
-import Bindings.WLC.Defines
-import Bindings.WLC.Core
+import Bindings.WLC
 import System.WLC.Utilities
 import System.WLC.Internal.Types
 

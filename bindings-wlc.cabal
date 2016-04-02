@@ -1,5 +1,5 @@
 name:                bindings-wlc
-version:             0.1.0.3
+version:             0.1.0.4
 synopsis:            Bindings against the wlc library
 description:         Please see Readme.md
 homepage:            http://github.com/aktowns/bindings-wlc#readme
