@@ -1,3 +1,4 @@
+{-# OPTIONS_HADDOCK hide #-}
 {-|
 Module      : System.WLC
 Description : WLC Abstractions

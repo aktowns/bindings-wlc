@@ -82,11 +82,11 @@ data TouchType = TouchDown
                | TouchFrame
                | TouchCancel deriving (Eq, Show)
 
-data Modifiers = Modifiers { leds :: Led, mods :: Modifier }
+data Modifiers = Modifiers { leds :: Led, mods :: Modifier } deriving (Eq, Show)
 
-newtype Output = Output { getOutputHandle :: C'wlc_handle }
+newtype Output = Output { getOutputHandle :: C'wlc_handle } deriving (Eq, Show)
 
-newtype View = View { getViewHandle :: C'wlc_handle }
+newtype View = View { getViewHandle :: C'wlc_handle } deriving (Eq, Show)
 
 tryGetView :: C'wlc_handle -> Maybe View
 tryGetView 0 = Nothing
