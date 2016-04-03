@@ -11,6 +11,6 @@ Provides abstractions over the low level WLC API's
 -}
 module System.WLC(module WLC) where
 
-import System.WLC.Core      as WLC
-import System.WLC.Geometry  as WLC
-import System.WLC.Types     as WLC
+import           System.WLC.Core     as WLC
+import           System.WLC.Geometry as WLC
+import           System.WLC.Types    as WLC

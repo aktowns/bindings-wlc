@@ -13,9 +13,9 @@ convert them back and forth from the underlying C representations.
 -}
 module System.WLC.Types where
 
-import Bindings.WLC
-import System.WLC.Utilities
-import System.WLC.Internal.Types
+import           Bindings.WLC
+import           System.WLC.Internal.Types
+import           System.WLC.Utilities      (Primitive (..))
 
 data LogType = LogInfo
              | LogWarn

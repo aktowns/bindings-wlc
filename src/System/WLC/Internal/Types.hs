@@ -1,7 +1,7 @@
 {-# OPTIONS_HADDOCK hide #-}
 module System.WLC.Internal.Types where
 
-import Bindings.WLC.Core
+import           Bindings.WLC.Core
 
 -- Wrappers around the type synonyms so we can add the Primitive instances.
 newtype WlcLogType       = WlcLogType { getRawLogType :: C'wlc_log_type } deriving (Show)

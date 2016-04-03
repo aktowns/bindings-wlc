@@ -11,21 +11,25 @@ Provides abstractions over the low level bindings to the core WLC API.
 -}
 module System.WLC.Core where
 
-import Bindings.WLC
-import System.WLC.Types
-import System.WLC.Geometry
-import System.WLC.Utilities
-import System.WLC.Internal.Types
+import           Bindings.WLC
+import           System.WLC.Geometry
+import           System.WLC.Internal.Types
+import           System.WLC.Types
+import           System.WLC.Utilities         (Primitive (..), apply3)
 
-import Data.Word(Word8, Word32)
-import Control.Monad(liftM2)
-import Foreign.Ptr(nullPtr)
-import Foreign.C.String(peekCString, withCString, newCString)
-import Foreign.Marshal.Array(withArray0)
-import Foreign.Marshal.Alloc(free, alloca)
-import Foreign.Marshal.Utils(with)
-import Data.Convertible.Base
-import Data.Convertible.Instances.C
+import           Data.Convertible.Base
+import           Data.Convertible.Instances.C
+import           Data.Maybe                   (fromMaybe)
+import           Data.Word                    (Word32, Word8)
+import           Foreign.C.String             (newCString, peekCString,
+                                               withCString)
+import           Foreign.C.Types              (CSize (..))
+import           Foreign.Marshal.Alloc        (alloca, free)
+import           Foreign.Marshal.Array        (newArray, peekArray, withArray,
+                                               withArray0)
+import           Foreign.Marshal.Utils        (with)
+import           Foreign.Ptr                  (nullPtr)
+import           Foreign.Storable             (peek)
 
 -- * Callback API
 
@@ -119,8 +123,8 @@ dispatchEvent (CompositorTerminate cb) = mk'compositor_terminate_cb cb >>= c'wlc
 -- |Set log handler. Can be set before initialize.
 logHandler :: (LogType -> String -> IO ()) -> IO ()
 logHandler cb = mk'log_handler_cb (\typ text -> do
-  str <- peekCString text
-  cb (fromPrimitive $ WlcLogType typ) str) >>= c'wlc_log_set_handler
+    str <- peekCString text
+    cb (fromPrimitive $ WlcLogType typ) str) >>= c'wlc_log_set_handler
 
 -- |Initialize wlc. Returns false on failure.
 --
@@ -141,8 +145,8 @@ terminate = c'wlc_terminate
 -- |Query backend wlc is using.
 getBackendType :: IO BackendType
 getBackendType = do
-  backend <- c'wlc_get_backend_type
-  return $ fromPrimitive (WlcBackendType backend)
+    backend <- c'wlc_get_backend_type
+    return $ fromPrimitive (WlcBackendType backend)
 
 -- |Exec program.
 exec :: String -> [String] -> IO ()
@@ -159,13 +163,61 @@ run = c'wlc_run
 
 -- ** Output
 
+-- |Get outputs.
+getOutputs :: IO [Output]
+getOutputs = with (CSize 0) (\cSize -> do
+    ptr <- c'wlc_get_outputs cSize
+    size <- peek cSize
+    handles <- peekArray (convert size) ptr
+    return $ map Output handles)
+
+-- |Get focused output.
+getFocusedOutput :: IO Output
+getFocusedOutput = Output <$> c'wlc_get_focused_output
+
+-- |Get output name.
+outputGetName :: Output -> IO String
+outputGetName (Output output) = c'wlc_output_get_name output >>= peekCString
+
+-- |Get sleep state.
+outputGetSleep :: Output -> IO Bool
+outputGetSleep (Output output) = c'wlc_output_get_sleep output
+
+-- |Wake up / sleep.
+outputSetSleep :: Output -> Bool -> IO ()
+outputSetSleep (Output output) = c'wlc_output_set_sleep output
+
+-- |Get resolution.
+outputGetResolution :: Output -> IO Size
+outputGetResolution (Output output) = fromMaybe zeroSize <$> (c'wlc_output_get_resolution output >>= fromPrimitivePtr)
+
+-- | Set resolution.
+outputSetResolution :: Output -> Size -> IO ()
+outputSetResolution (Output output) size = with (toPrimitive size) $ c'wlc_output_set_resolution output
+
 -- |Get current visibility bitmask.
 outputGetMask :: Output -> IO Word32
-outputGetMask (Output view) = convert <$> c'wlc_output_get_mask view
+outputGetMask (Output output) = convert <$> c'wlc_output_get_mask output
 
 -- |Set visibility bitmask.
 outputSetMask :: Output -> Word32 -> IO ()
-outputSetMask (Output view) mask = c'wlc_output_set_mask view (convert mask)
+outputSetMask (Output output) mask = c'wlc_output_set_mask output (convert mask)
+
+-- |Get views in stack order.
+outputGetViews :: Output -> IO [View]
+outputGetViews (Output output) = with (CSize 0) (\cSize -> do
+    ptr <- c'wlc_output_get_views output cSize
+    size <- peek cSize
+    handles <- peekArray (convert size) ptr
+    return $ map View handles)
+
+-- |Set views in stack order. This will also change mutable views. Returns false on failure.
+outputSetViews :: Output -> [View] -> IO Bool
+outputSetViews (Output output) views = withArray viewHandles (\cViews ->
+    c'wlc_output_set_views output cViews viewLength)
+  where
+    viewHandles = map getViewHandle views
+    viewLength = convert $ length views :: CSize
 
 -- |Focus output. Pass zero for no focus.
 outputFocus :: Output -> IO ()
@@ -260,11 +312,10 @@ viewGetAppId (View view) = c'wlc_view_get_app_id view >>= peekCString
 
 -- |Get current pointer position.
 pointerGetPosition :: IO Point
-pointerGetPosition =
-    alloca (\point -> do
-        c'wlc_pointer_get_position point
-        Just pt <- fromPrimitivePtr point
-        return pt)
+pointerGetPosition = alloca (\point -> do
+    c'wlc_pointer_get_position point
+    Just pt <- fromPrimitivePtr point
+    return pt)
 
 -- |Set current pointer position.
 pointerSetPosition :: Point -> IO ()

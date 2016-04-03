@@ -1,15 +1,14 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
-
 module System.WLC.Utilities(checkPtr, getPtrValue, apply3, Primitive(..)) where
 
-import Foreign.Ptr(Ptr, nullPtr)
-import Foreign.Storable(Storable, peek)
+import           Foreign.Ptr      (Ptr, nullPtr)
+import           Foreign.Storable (Storable, peek)
 
 class Primitive a b where
-  fromPrimitive :: a -> b
-  fromPrimitivePtr :: (Storable a) => Ptr a -> IO (Maybe b)
-  fromPrimitivePtr ptr = fmap fromPrimitive <$> getPtrValue ptr
-  toPrimitive :: b -> a
+    fromPrimitive :: a -> b
+    toPrimitive :: b -> a
+    fromPrimitivePtr :: (Storable a) => Ptr a -> IO (Maybe b)
+    fromPrimitivePtr ptr = fmap fromPrimitive <$> getPtrValue ptr
 
 checkPtr :: Ptr a -> Maybe (Ptr a)
 checkPtr ptr = if ptr /= nullPtr then Just ptr else Nothing

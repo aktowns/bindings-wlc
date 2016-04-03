@@ -11,8 +11,8 @@ Provides bindings to the low level WLC API's
 -}
 module Bindings.WLC(module WLCBindings) where
 
-import Bindings.WLC.Defines     as WLCBindings
-import Bindings.WLC.Geometry    as WLCBindings
-import Bindings.WLC.Core        as WLCBindings
-import Bindings.WLC.Render      as WLCBindings
-import Bindings.WLC.Wayland     as WLCBindings
+import           Bindings.WLC.Core     as WLCBindings
+import           Bindings.WLC.Defines  as WLCBindings
+import           Bindings.WLC.Geometry as WLCBindings
+import           Bindings.WLC.Render   as WLCBindings
+import           Bindings.WLC.Wayland  as WLCBindings

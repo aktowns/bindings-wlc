@@ -243,7 +243,7 @@ import Bindings.WLC.Geometry
 -- * Output API
 
 -- |Get outputs. Returned array is a direct reference, careful when moving and destroying handles.
-#ccall wlc_get_outputs , Ptr CSize -> IO <wlc_handle>
+#ccall wlc_get_outputs , Ptr CSize -> IO (Ptr <wlc_handle>)
 -- |Get focused output.
 #ccall wlc_get_focused_output , IO <wlc_handle>
 -- |Get output name.
@@ -262,6 +262,9 @@ import Bindings.WLC.Geometry
 #ccall wlc_output_set_mask , <wlc_handle> -> CUInt -> IO ()
 -- |Get views in stack order. Returned array is a direct reference, careful when moving and destroying handles.
 #ccall wlc_output_get_views , <wlc_handle> -> Ptr CSize -> IO (Ptr wlc_handle)
+-- |Set views in stack order. This will also change mutable views. Returns false on failure.
+#ccall wlc_output_set_views , <wlc_handle> -> Ptr <wlc_handle> -> CSize -> IO Bool
+
 -- |Focus output. Pass zero for no focus.
 #ccall wlc_output_focus , <wlc_handle> -> IO ()
 
