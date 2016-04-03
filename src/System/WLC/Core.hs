@@ -272,6 +272,11 @@ viewGetGeometry (View view) = do
     Just geo <- fromPrimitivePtr geoPtr
     return geo
 
+-- |Set geometry. Set edges if the geometry change is caused by interactive resize.
+viewSetGeometry :: View -> ResizeEdge -> Geometry -> IO ()
+viewSetGeometry (View view) resize geom =
+    with (toPrimitive geom) $ c'wlc_view_set_geometry view (getResizeEdge $ toPrimitive resize)
+
 -- |Get 'ViewType' bitfield.
 viewGetViewType :: View -> IO ViewType
 viewGetViewType (View view) = fromPrimitive . WlcViewTypeBit <$> c'wlc_view_get_type view
